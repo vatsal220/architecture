@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# -----------------------------------------------------------------------------
+# Pipeline-generated artifacts
+# The data-lake zones and model artifacts are fully reproducible via
+# `python run_pipeline.py`, so they are not tracked. The small JSON reports and
+# run manifests under outputs/ ARE tracked as sample evidence of a run.
+# -----------------------------------------------------------------------------
+/data/
+/outputs/models/*/
+/outputs/recommendations/*.parquet
+/outputs/publish/*.csv
+
+# Local virtual environment used during development
+.venv/
+
+# Stray run logs
+pipe.log
+svd_test.log
+nohup.out
