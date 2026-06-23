@@ -1,0 +1,80 @@
+{
+  "stage": "02_validate_data",
+  "generated_at": "2026-06-23T00:00:16",
+  "rows_in": 100000,
+  "rows_out": 100000,
+  "rows_dropped": 0,
+  "passed": true,
+  "checks": [
+    {
+      "name": "schema_validation",
+      "severity": "BLOCK",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 4,
+      "action": "none",
+      "detail": "schema ok",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "minimum_volume",
+      "severity": "BLOCK",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "none",
+      "detail": "100000 rows (minimum 1000)",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "missing_identifiers",
+      "severity": "BLOCK",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "quarantine rows; abort if over threshold",
+      "detail": "null id fraction 0.0000 (threshold 0.01)",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "invalid_interaction_values",
+      "severity": "BLOCK",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "quarantine rows; abort if over threshold",
+      "detail": "out-of-range rating fraction 0.0000 (threshold 0.02)",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "invalid_timestamps",
+      "severity": "WARN",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "quarantine offending rows",
+      "detail": "0 rows with null/non-positive/future timestamps",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "reference_integrity",
+      "severity": "BLOCK",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "drop orphan rows; abort if over threshold",
+      "detail": "orphan-item fraction 0.0000 (threshold 0.05)",
+      "violation_fraction": 0.0
+    },
+    {
+      "name": "duplicate_records",
+      "severity": "WARN",
+      "passed": true,
+      "n_violations": 0,
+      "n_total": 100000,
+      "action": "drop duplicates (keep first)",
+      "detail": "0 exact duplicate rows",
+      "violation_fraction": 0.0
+    }
+  ]
+}

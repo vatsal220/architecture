@@ -1,0 +1,61 @@
+{
+  "batch_id": "20260623-000016",
+  "published_at": "2026-06-23T00:00:20",
+  "env": "local",
+  "model_version": "20260623-000016",
+  "git_sha": "a1b6907",
+  "data_fingerprint": "0df2eb22101759b0",
+  "n_users_scored": 943,
+  "n_recommendation_rows": 18860,
+  "metrics": {
+    "k": 10,
+    "n_eval_users": 943,
+    "precision_at_k": 0.158006,
+    "recall_at_k": 0.11411,
+    "map_at_k": 0.086946,
+    "ndcg_at_k": 0.181293,
+    "coverage": 0.363128,
+    "diversity": 0.752044,
+    "k_sweep": {
+      "k=5": {
+        "precision": 0.169247,
+        "recall": 0.060955,
+        "map": 0.107438,
+        "ndcg": 0.178286
+      },
+      "k=10": {
+        "precision": 0.158006,
+        "recall": 0.11411,
+        "map": 0.086946,
+        "ndcg": 0.181293
+      },
+      "k=20": {
+        "precision": 0.134571,
+        "recall": 0.186786,
+        "map": 0.080795,
+        "ndcg": 0.195225
+      }
+    },
+    "cold_start": {
+      "slice_definition": "eval users with train history <= 26 (least-active quartile)",
+      "n_cold_users": 246,
+      "precision_at_k": 0.099593,
+      "recall_at_k": 0.182869,
+      "ndcg_at_k": 0.151517
+    }
+  },
+  "input_quality_passed": true,
+  "post_scoring_quality_passed": true,
+  "promotion_decision": {
+    "promote": true,
+    "metric": "ndcg",
+    "value": 0.181293,
+    "floor": 0.05,
+    "reason": "ndcg_at_k=0.181293 >= floor 0.05"
+  },
+  "artifacts": {
+    "recommendations_parquet": "/Users/vatsalpatel/Desktop/Repository/projects/ongoing/architecture/outputs/recommendations/recommendations_20260623-000016.parquet",
+    "recommendations_csv": "/Users/vatsalpatel/Desktop/Repository/projects/ongoing/architecture/outputs/publish/recommendations_20260623-000016.csv",
+    "model_artifact": "/Users/vatsalpatel/Desktop/Repository/projects/ongoing/architecture/outputs/models/20260623-000016"
+  }
+}

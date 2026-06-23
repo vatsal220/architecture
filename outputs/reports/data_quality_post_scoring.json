@@ -1,0 +1,37 @@
+{
+  "stage": "06_generate_recommendations:post_quality",
+  "generated_at": "2026-06-23T00:00:20",
+  "passed": true,
+  "checks": [
+    {
+      "name": "slate_completeness",
+      "severity": "WARN",
+      "passed": true,
+      "detail": "0 users with fewer than top_n=20 items"
+    },
+    {
+      "name": "scoring_completeness",
+      "severity": "BLOCK",
+      "passed": true,
+      "detail": "943/943 eligible users scored"
+    },
+    {
+      "name": "recommendation_reference_integrity",
+      "severity": "BLOCK",
+      "passed": true,
+      "detail": "0 recommended items not in catalogue"
+    },
+    {
+      "name": "no_duplicate_items_in_slate",
+      "severity": "BLOCK",
+      "passed": true,
+      "detail": "0 duplicate (user,item) pairs"
+    },
+    {
+      "name": "catalogue_coverage_floor",
+      "severity": "WARN",
+      "passed": true,
+      "detail": "catalogue coverage 0.419"
+    }
+  ]
+}
