@@ -29,7 +29,7 @@
 ## Executive Summary  
 The document outlines an reusable architecture for providing recommendations for the Toronto Data Platform for the City of Toronto. These recommendations will be provided to improve citizen engagement by surfacing relevant services, programs, events and resources from historical interaction patterns. This document outlines a batch first, AWS native recommendation architecture built on the existing TDP data lake (raw → standard → curated → features → models) and Kubernetes, deployed across the Dev/Test/Prod multi-account structure with Lake Formation governance, KMS encryption and CodePipeline promotion.  
 
-The accompanying prototype implements the full seven-stage pipeline end to end on a MovieLens public dataset reframed as citizens x recreation programs. It demonstrates the data quality gates, feature engineering, a hybrid matrix factorization + popularity model, ranking evaluations (precision, recall, MAP, NDCG@K, coverage, diversity, cold-start), a local model registry with a promotion gate, and a published recommendations artifact with an auditable run manifest. A FastAPI service then serves the registered model over HTTP, the runnable form of EKS real time path with Kubernetes manifests under deploy/k8s. It runs in ~2 seconds and is the literal, runnable encoding of the architecture below.
+The accompanying prototype implements the full seven-stage pipeline end to end on a MovieLens public dataset reframed as citizens x recreation programs. It demonstrates the data quality gates, feature engineering, a hybrid matrix factorization + popularity model, ranking evaluations (precision, recall, MAP, NDCG@K, coverage, diversity, cold-start), a local model registry with a promotion gate, and a published recommendations artifact with an auditable run manifest. A FastAPI service then serves the registered model over HTTP, the runnable form of EKS real time path with Kubernetes manifests under deploy/k8s. The loader fetches MovieLens ml-100k automatically on first run; the pipeline then completes in ~3 seconds and is the literal, runnable encoding of the architecture below.
 
 This design is optimized for engineering judgement, governability and operability on a public sector platform, not for the last point of recommendation accuracy*. Every choice below favours the simpler solution that is correct, observable, secure, and cheap to run, with clear seams to scale up when (and only when) the need is demonstrated.
 
@@ -310,7 +310,7 @@ Runbooks for each alarm are in [`operational_scenarios.md`](./operational_scenar
 ### Dev/Staging/Prod Separation
 | Account | Purpose | Data | Who |
 |---------|---------|------|-----|
-| **Dev** | Experimentation, feature/model development, pipeline build | Sample / synthetic / masked | Engineers (broad, sandboxed). |
+| **Dev** | Experimentation, feature/model development, pipeline build | Sample / masked / public (e.g. MovieLens) | Engineers (broad, sandboxed). |
 | **Staging** | Full pipeline on **prod-like** governed data; integration & UAT | Prod-like (governed copy) | CI/CD + QA + division UAT. |
 | **Prod** | Scheduled batch + FastAPI serving | Real Curated data | CI/CD / Argo CD only; no human write access. |  
 
