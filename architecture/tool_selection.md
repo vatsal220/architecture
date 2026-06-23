@@ -65,7 +65,7 @@ This is the central platform decision. SageMaker is a perfectly good managed ML 
 | **Single-model, single-division** | One global model. | MLflow registry + the `score_users`/serving contract make multi-model / per-division scaling straightforward. |
 
 ---
-## 5. Operational Considerations
+## Operational Considerations
 
 * **Runtime:** containers on EKS — pipeline stages as Argo-orchestrated **K8s Jobs**, batch as a **CronJob**, serving as a **Deployment**. Node lifecycle via managed node groups / **Karpenter**; cluster + add-ons via IaC.
 * **Scheduling:** **EventBridge / Argo CronWorkflow** (retrains) and a **CronJob** (nightly batch).
@@ -76,7 +76,7 @@ This is the central platform decision. SageMaker is a perfectly good managed ML 
 * **Team fit:** plain Python + Kubernetes — broadly maintainable and a good fit for a platform team that already runs EKS.
 
 ---
-## 6. Cost Considerations
+## Cost Considerations
 | Driver | Phase 1 (Batch + Lean API on EKS) | Real-Time |
 |--------|-----------------------------------|-----------|
 | Compute | Short-lived CPU **K8s Jobs/CronJobs** (minutes) on **spot/Karpenter**; API at a small replica floor | Always-on GPU serving (24×7) + GPU training |
@@ -88,7 +88,7 @@ This is the central platform decision. SageMaker is a perfectly good managed ML 
 Batch-first on shared EKS is the **cost-responsible default for a public service**: we pay for compute mainly when the nightly job runs, and the API floor is a few small pods.
 
 ---
-## 7. Production Deployment Considerations
+## Production Deployment Considerations
 
 * **Packaging:** two images in **ECR** — pipeline (`Docker/Dockerfile`) and serving (`Docker/Dockerfile.serving`) — the units of promotion. Identical artifact from laptop → CI → EKS; only args + the pod's IAM role (IRSA) differ.
 * **Promotion:** images + Kustomize overlays promoted Dev→Test→Prod via CodePipeline build/test and **Argo CD** sync; models promoted through the **MLflow Model Registry** behind a **metric quality gate** + manual approval (`src/model/registry.py::promotion_gate`).
