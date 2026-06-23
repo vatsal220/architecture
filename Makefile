@@ -12,12 +12,12 @@ train: # Run the full recommendation pipeline end-to-end (single entry point)
 
 .PHONY: test-unit
 test-unit: # Run unit tests
-	PYTHONPATH=$(ROOT_DIR)/src pytest -vv -s $(ROOT_DIR)/tests/unit
+	PYTHONPATH=$(ROOT_DIR)/src $(PY) -m pytest -vv -s $(ROOT_DIR)/tests/unit
 
 .PHONY: test-integration
 test-integration: # Run integration tests
-	PYTHONPATH=$(ROOT_DIR)/src pytest -vv -s $(ROOT_DIR)/tests/integration
+	PYTHONPATH=$(ROOT_DIR)/src $(PY) -m pytest -vv -s $(ROOT_DIR)/tests/integration
 
 .PHONY: test-e2e
 test-e2e: # Run end-to-end tests (executes the full pipeline)
-	PYTHONPATH=$(ROOT_DIR)/src pytest -vv -s $(ROOT_DIR)/tests/e2e
+	PYTHONPATH=$(ROOT_DIR)/src $(PY) -m pytest -vv -s $(ROOT_DIR)/tests/e2e

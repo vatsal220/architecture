@@ -1,0 +1,87 @@
+# =============================================================================
+# Toronto Data Platform (TDP) - Recommendation Pipeline Configuration
+# -----------------------------------------------------------------------------
+# Single source of truth for the end-to-end training prototype. Every stage of
+# run_pipeline.py reads from this file so that a run is fully reproducible from
+# (config + dataset + git SHA). In the target AWS deployment this file is the
+# artifact promoted Dev -> Test -> Prod; only the `env`, `paths`, and `aws`
+# blocks differ per account (see configs/README.md).
+# =============================================================================
+
+env: local                      # local | dev | test | prod
+
+# Business framing of the public dataset (see README + tool_selection.md).
+# We model "citizens" interacting with "recreation programs" on top of the real
+# MovieLens ml-100k dataset (user -> citizen, movie -> program, genre ->
+# program category, rating -> engagement). The loader fetches the dataset
+# automatically on first run and caches it under paths.raw_dir.
+dataset:
+  name: toronto_recreation_engagement
+  rating_scale: [1, 5]         # MovieLens ratings are 1..5
+  movielens:
+    download: true             # auto-fetch ml-100k if not already cached in raw_dir
+    download_url: https://files.grouplens.org/datasets/movielens/ml-100k.zip
+    interactions_file: u.data  # tab-separated: user item rating timestamp
+    items_file: u.item         # pipe-separated MovieLens item metadata
+
+# Data-lake style zones materialised under paths.* (mirrors Raw/Standard/
+# Curated/Features/Models on S3). Local runs write to ./data and ./outputs.
+paths:
+  raw_dir: data/raw
+  standard_dir: data/standard
+  curated_dir: data/curated
+  features_dir: data/features
+  models_dir: outputs/models
+  recommendations_dir: outputs/recommendations
+  reports_dir: outputs/reports
+  publish_dir: outputs/publish
+
+# Data quality thresholds. `block` = a violation above threshold fails the run.
+data_quality:
+  duplicate_action: drop             # drop | block | warn
+  future_timestamp_grace_days: 1
+  min_rows: 1000
+  max_null_id_fraction: 0.01         # quarantine small fraction; block if >1% (upstream breakage)
+  max_invalid_rating_fraction: 0.02  # >2% out-of-range ratings => block
+  max_orphan_item_fraction: 0.05     # >5% interactions w/o item metadata => block
+
+# Train / evaluation split. Leave-one-out style temporal holdout per user.
+split:
+  strategy: temporal_holdout         # temporal_holdout | random
+  test_fraction: 0.2
+  min_interactions_for_eval: 3       # users below this only seen at train time
+  seed: 42
+
+feature_engineering:
+  implicit_confidence_alpha: 1.0     # confidence = 1 + alpha * rating
+  recency_half_life_days: 90         # exponential decay for interaction recency
+  min_item_interactions: 2           # rare-item floor (kept, flagged cold)
+
+model:
+  primary: svd_mf                    # svd_mf (TruncatedSVD matrix factorisation)
+  fallback: popularity               # cold-start / no-history fallback
+  svd_mf:
+    n_factors: 64
+    random_state: 42
+  popularity:
+    decay: true                      # popularity weighted by recency
+  hybrid:
+    cold_start_min_interactions: 3   # below => serve popularity/content blend
+
+evaluation:
+  k: 10
+  k_sweep: [5, 10, 20]
+  metrics: [precision, recall, map, ndcg, coverage, diversity]
+  cold_start_report: true
+
+recommendations:
+  top_n: 20
+  exclude_seen: true
+
+registry:
+  artifact_format: npz
+  promote_metric: ndcg               # gating metric for model promotion
+  min_promote_value: 0.05            # below => block promotion to next account
+
+logging:
+  level: INFO
