@@ -91,7 +91,7 @@ persisted for audit.
 | 3 | **Duplicate records** | Duplicates over-weight a pair and bias the confidence matrix | No (WARN) | Drop duplicates (keep first) |
 | 4 | **Invalid timestamps** (null/non-positive/future) | Recency & the temporal split depend on them; a future timestamp leaks the future | No (WARN) | Quarantine offending rows |
 | 5 | **Invalid interaction values** (out of range) | Distort confidence weighting; a high rate signals an upstream bug | **Yes**, above tolerance | Quarantine; abort if fraction > threshold |
-| 6 | **Reference integrity** (orphan items) | Content features & diversity need item metadata; orphans can't be enriched/explained | **Yes**, above tolerance | Drop orphans; abort if fraction > threshold |
+| 6 | **Reference integrity** (items) | Content features & diversity need item metadata; items can't be enriched/explained | **Yes**, above tolerance | Drop items; abort if fraction > threshold |
 | (7) | **Minimum volume floor** | A tiny batch usually means a broken extract; CF degrades to noise | **Yes** | Abort |
 
 Five **post-scoring** checks then guard the generated recommendations
@@ -100,7 +100,7 @@ completeness, catalogue-coverage floor).
 
 > MovieLens `ml-100k` is already clean, so on real data these gates typically
 > report all-clear. Each check is exercised against crafted defects (nulls,
-> out-of-range ratings, future timestamps, orphan items, duplicates) in
+> out-of-range ratings, future timestamps, items, duplicates) in
 > `tests/unit/test_quality.py`.
 
 ---
