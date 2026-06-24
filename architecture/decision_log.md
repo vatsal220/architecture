@@ -73,7 +73,7 @@ This document outlines key technical decisions for the TDP recommendation soluti
 |---|---|
 | **Decision** | How do quality checks fail the pipeline? |
 | **Alternatives** | (a) Hard-fail on any defect; (b) **severity-based** (BLOCK aborts, WARN repairs + continues, BLOCK-above-threshold); (c) log-only. |
-| **Selected** | **Severity-based with thresholds** — schema/volume hard-block; ids/ratings/orphans block only above a small tolerance; duplicates/timestamps repaired with a warning. |
+| **Selected** | **Severity-based with thresholds** — schema/volume hard-block; ids/ratings block only above a small tolerance; duplicates/timestamps repaired with a warning. |
 | **Justification** | Real data always has a small defect rate; hard-failing on every null is brittle and pages people needlessly. Catastrophic rates (upstream breakage) still block. All outcomes are persisted for audit. |
 | **Trade-off** | Quarantining rows silently drops some data; bounded by thresholds and fully logged in the quality report. |
 

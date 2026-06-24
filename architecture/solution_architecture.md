@@ -276,7 +276,6 @@ Written as partitioned Parquet (machine contract) + CSV preview (divisional), ac
 | 3 | Duplicate records | WARN | Duplicates over-weight a pair / bias confidence | Drop duplicates (keep first) |
 | 4 | Invalid timestamps (null/non-positive/future) | WARN | Recency & temporal split depend on them; future = leakage | Quarantine offending rows |
 | 5 | Invalid interaction values (out of range) | BLOCK* | Distorts confidence; high rate = upstream bug | Quarantine; abort if > threshold |
-| 6 | Reference integrity (orphan items) | BLOCK* | Content features/diversity need metadata | Drop orphans; abort if > threshold |
 
 ### Post-scoring Data Quality
 Catches failure modes that appear only *after* inference:
