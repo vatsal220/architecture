@@ -7,7 +7,7 @@ historical interaction patterns.
 
 ---
 
-## The pipeline
+## The Pipeline
 
 A single entry point runs the seven canonical stages end-to-end. Each stage is
 idempotent and writes to a data-lake-style zone (Raw → Standard → Curated →
@@ -29,7 +29,7 @@ Dev→Test→Prod promotion.
 
 ---
 
-## Quick start
+## Quick Start
 
 Requires Python 3.11 (works on 3.9+). On the first run the loader **fetches the
 MovieLens `ml-100k` dataset automatically** (~5 MB) and caches it under
@@ -78,7 +78,7 @@ gating machinery, not the absolute score.
 
 ---
 
-## Data Quality & Validation (Part 4)
+## Data Quality & Validation
 
 Six input checks (`src/data/quality.py`), each with a severity. **BLOCK** aborts
 the run (above its threshold); **WARN** repairs and continues. All outcomes are
@@ -105,7 +105,7 @@ completeness, catalogue-coverage floor).
 
 ---
 
-## Model Evaluation (Part 5)
+## Model Evaluation
 
 Ranking-aware metrics (`src/model/evaluate.py`), because the division consumes an
 **ordered slate**, not rating predictions:
